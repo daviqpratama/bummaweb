@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - BUMMA Papua</title>
+
+    <!-- Font Figtree & Tailwind CSS -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #E4E8D6;
+            font-family: 'Figtree', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex h-screen">
+        <!-- Gambar Kiri -->
+        <div class="w-full lg:w-[30%] h-64 lg:h-full bg-center bg-cover"
+             style="background-image: url('/images/daun.jpg');"></div>
+
+        <!-- Form Login -->
+        <div class="w-full lg:w-[70%] p-6 flex items-center justify-center">
+            <div class="w-full max-w-md">
+                <!-- Judul -->
+                <h3 class="text-center mb-2 text-5xl font-bold text-[#42563D]">
+                    MASUK
+                </h3>
+
+                <!-- Error -->
+                @if (ViewBag.Error != null)
+                {
+                    <div class="text-red-600 text-center mb-4 font-semibold">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <!-- Form -->
+                <form method="post" asp-controller="Login" asp-action="Login">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Email -->
+                    <div class="mt-4">
+                        <input name="Email" type="email" required placeholder="Email"
+                               class="w-full px-4 py-2 rounded-md placeholder-[#282323]"
+                               style="background-color: #DDE1CD; color: #282323;" />
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mt-6">
+                        <input name="Password" type="password" required placeholder="Password"
+                               class="w-full px-4 py-2 rounded-md placeholder-[#282323]"
+                               style="background-color: #DDE1CD; color: #282323;" />
+                    </div>
+
+                    <!-- Tombol -->
+                    <div class="mt-4">
+                        <button type="submit"
+                                class="w-full h-12 rounded-md font-semibold text-white shadow"
+                                style="background-color: #637A30;">
+                            Masuk
+                        </button>
+                    </div>
+
+                    <!-- Link Daftar -->
+                    <div class="text-center mt-4">
+                        <a href="/Register" class="underline text-sm text-gray-600 hover:text-gray-800">
+                            Belum punya akun? Daftar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

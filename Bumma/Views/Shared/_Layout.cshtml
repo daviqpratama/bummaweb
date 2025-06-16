@@ -59,12 +59,11 @@
                         <a href="/" class="text-[#42563D] font-medium hover:text-[#2d3b2a] transition duration-200">
                             Dashboard
                         </a>
-                        <form asp-area="" asp-controller="Account" asp-action="Login" method="post">
-                            <button type="submit"
-                                    class="px-4 py-2 bg-[#42563D] text-black font-semibold rounded-lg shadow hover:bg-[#2f3c29] transition">
-                                Login
-                            </button>
-                        </form>
+                        <a href="@Url.Action("Login", "Login")"
+                           class="px-4 py-2 bg-[#42563D] text-black font-semibold rounded-lg shadow hover:bg-[#2f3c29] transition">
+                            Login
+                        </a>
+
 
                     </div>
 
