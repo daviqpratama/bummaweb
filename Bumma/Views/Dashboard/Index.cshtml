@@ -1,0 +1,100 @@
+﻿@model List<Bumma.Models.Saldo>
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";  // Atur layout sesuai project Anda
+    ViewData["Title"] = "Dashboard";
+
+    // Ambil ringkasan dari ViewBag
+    decimal totalDebit = ViewBag.TotalDebit ?? 0m;
+    decimal totalKredit = ViewBag.TotalKredit ?? 0m;
+    decimal selisih = ViewBag.Selisih ?? 0m;
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-6">📊 Ringkasan Saldo</h2>
+
+    @if (TempData["DashboardError"] != null)
+    {
+        <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
+            @TempData["DashboardError"]
+        </div>
+    }
+
+    <!-- Card Summary -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-xl font-medium text-gray-700">Total Debit</h3>
+            <p class="mt-2 text-3xl font-bold text-green-600">@totalDebit.ToString("N0")</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-xl font-medium text-gray-700">Total Kredit</h3>
+            <p class="mt-2 text-3xl font-bold text-red-600">@totalKredit.ToString("N0")</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-xl font-medium text-gray-700">Selisih</h3>
+            <p class="mt-2 text-3xl font-bold text-gray-800">@selisih.ToString("N0")</p>
+        </div>
+    </div>
+
+    <!-- Chart Bar -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <canvas id="saldoBarChart"></canvas>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('saldoBarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Debit', 'Total Kredit', 'Selisih'],
+                datasets: [{
+                    label: 'Ringkasan',
+                    data: [
+    @totalDebit,
+    @totalKredit,
+    @selisih
+                    ],
+                    backgroundColor: [
+                        'rgba(34,197,94,0.6)',
+                        'rgba(239,68,68,0.6)',
+                        'rgba(55,65,81,0.6)' // abu-abu gelap untuk selisih
+                    ],
+                    borderColor: [
+                        'rgba(34,197,94,1)',
+                        'rgba(239,68,68,1)',
+                        'rgba(55,65,81,1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            // format ribuan dengan toLocaleString pada JS
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let v = context.parsed.y;
+                                return v.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>

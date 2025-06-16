@@ -1,0 +1,156 @@
+﻿@model List<Bumma.Models.Saldo>
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Data Saldo";
+}
+
+<h2 class="text-3xl font-semibold text-gray-800 mb-4">📋 Data Saldo Awal</h2>
+
+<!-- Tombol Tambah Akun -->
+<div class="mb-4 flex justify-end">
+    <button onclick="openCreateModal()"
+            class="inline-flex items-center bg-green-600 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-green-700 transition duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+        </svg>
+        Tambah Akun
+    </button>
+</div>
+
+<!-- Tabel Saldo -->
+<div class="overflow-x-auto shadow rounded-lg">
+    <table class="min-w-full bg-white divide-y divide-gray-200 rounded-lg overflow-hidden">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-6 py-3 text-left text-base font-extrabold text-gray-800">Nama Akun</th>
+                <th class="px-6 py-3 text-left text-base font-extrabold text-gray-800">Debit</th>
+                <th class="px-6 py-3 text-left text-base font-extrabold text-gray-800">Kredit</th>
+                <th class="px-6 py-3 text-left text-base font-extrabold text-gray-800">Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 text-sm text-gray-800">
+            @foreach (var item in Model)
+            {
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-4">@item.NamaAkun</td>
+                    <td class="px-6 py-4">@item.Debit.ToString("N0")</td>
+                    <td class="px-6 py-4">@item.Kredit.ToString("N0")</td>
+                    <td class="px-6 py-4">
+                        <div class="flex space-x-2">
+                            <button onclick="openEditModal(@item.Id, '@item.NamaAkun', @item.Debit, @item.Kredit)"
+                                    class="bg-yellow-400 hover:bg-yellow-500 text-white p-2 rounded-md transition"
+                                    title="Edit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 010 2.828L8.414 14.414a1 1 0 01-.293.207l-4 2a1 1 0 01-1.32-1.32l2-4a1 1 0 01.207-.293L14.586 2.586a2 2 0 012.828 0z" />
+                                </svg>
+                            </button>
+                            <button onclick="openDeleteModal(@item.Id)"
+                                    class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md transition"
+                                    title="Hapus">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H3.5a.5.5 0 000 1H4v11a2 2 0 002 2h8a2 2 0 002-2V5h.5a.5.5 0 000-1H15V3a1 1 0 00-1-1H6zm2 4a.5.5 0 011 0v8a.5.5 0 01-1 0V6zm4 0a.5.5 0 011 0v8a.5.5 0 01-1 0V6z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Create -->
+<div id="createModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
+        <h2 class="text-xl font-bold mb-4">Tambah Akun</h2>
+        <form method="post" asp-action="Create">
+            <div class="mb-3">
+                <label class="block font-semibold">Nama Akun</label>
+                <input type="text" name="NamaAkun" class="w-full border px-3 py-2 rounded" required />
+            </div>
+            <div class="mb-3">
+                <label class="block font-semibold">Debit</label>
+                <input type="number" name="Debit" class="w-full border px-3 py-2 rounded" />
+            </div>
+            <div class="mb-3">
+                <label class="block font-semibold">Kredit</label>
+                <input type="number" name="Kredit" class="w-full border px-3 py-2 rounded" />
+            </div>
+            <div class="flex justify-end space-x-2 mt-4">
+                <button type="button" onclick="closeCreateModal()" class="px-4 py-2 bg-gray-300 rounded">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
+        <h2 class="text-xl font-bold mb-4">Edit Akun</h2>
+        <form method="post" asp-action="Edit">
+            <input type="hidden" name="Id" id="editId" />
+            <div class="mb-3">
+                <label class="block font-semibold">Nama Akun</label>
+                <input type="text" name="NamaAkun" id="editNamaAkun" class="w-full border px-3 py-2 rounded" required />
+            </div>
+            <div class="mb-3">
+                <label class="block font-semibold">Debit</label>
+                <input type="number" name="Debit" id="editDebit" class="w-full border px-3 py-2 rounded" />
+            </div>
+            <div class="mb-3">
+                <label class="block font-semibold">Kredit</label>
+                <input type="number" name="Kredit" id="editKredit" class="w-full border px-3 py-2 rounded" />
+            </div>
+            <div class="flex justify-end space-x-2 mt-4">
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-300 rounded">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Delete -->
+<div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-lg w-full max-w-sm">
+        <h2 class="text-lg font-bold mb-4">Yakin ingin menghapus?</h2>
+        <p class="mb-4 text-gray-600">Data tidak dapat dikembalikan setelah dihapus.</p>
+        <form method="post" asp-action="Delete">
+            <input type="hidden" name="Id" id="deleteId" />
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-300 rounded">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">Hapus</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JS Modal Handler -->
+<script>
+    function openCreateModal() {
+        document.getElementById('createModal').classList.remove('hidden');
+    }
+    function closeCreateModal() {
+        document.getElementById('createModal').classList.add('hidden');
+    }
+
+    function openEditModal(id, nama, debit, kredit) {
+        document.getElementById('editId').value = id;
+        document.getElementById('editNamaAkun').value = nama;
+        document.getElementById('editDebit').value = debit;
+        document.getElementById('editKredit').value = kredit;
+        document.getElementById('editModal').classList.remove('hidden');
+    }
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+    }
+
+    function openDeleteModal(id) {
+        document.getElementById('deleteId').value = id;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+</script>
