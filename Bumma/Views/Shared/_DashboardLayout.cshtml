@@ -29,26 +29,8 @@
             width: auto;
         }
 
-        .divider {
-            border-top: 2px solid #000;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        /* Navbar */
-        nav {
-            background-color: #E4E8D6;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        /* Sidebar */
         .sidebar {
-            height: calc(100vh - 80px); /* navbar 80px */
-            width: 220px; /* kecil */
+            height: calc(100vh - 80px); /* asumsi navbar tinggi 80px */
             background-color: #E4E8D6;
             box-shadow: 2px 0 8px rgba(0,0,0,0.1);
             padding: 1rem;
@@ -56,7 +38,6 @@
             overflow-y: auto;
         }
 
-        /* Menu card */
         .menu-card {
             width: 180px;
             height: 51px;
@@ -86,25 +67,29 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased flex flex-col min-h-screen" style="background-color: #E4E8D6;">
+<body class="font-sans antialiased flex flex-col min-h-screen">
 
     <!-- Navbar -->
-    <nav class="border-b shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <a href="/" class="flex items-center space-x-2">
-                    <img src="/images/logo.png" alt="Logo" class="logo" />
-                </a>
+    <nav class="border-b shadow-sm bg-[#E4E8D6]">
+        <!-- Logo mentok kiri, di luar container mx-auto -->
+        <div class="flex items-center h-20">
+            <!-- Elemen logo di ujung kiri viewport -->
+            <a href="/" class="flex-shrink-0">
+                <img src="/images/logo.png" alt="Logo" class="logo" />
+            </a>
 
-                <!-- Right Side -->
-                <div class="flex items-center space-x-6">
-                    <span class="font-semibold text-black">Hallo, @userName</span>
-                    <a href="@Url.Action("Index", "Home")"
-                       class="px-4 py-2 bg-white text-black font-semibold rounded-lg shadow hover:bg-gray-100 transition">
-                        Logout
-                    </a>
-                </div>
+            <!-- Container untuk isi navbar lainnya, dipusatkan -->
+            <div class="flex-grow flex justify-center">
+                <!-- Bisa kosong atau judul tengah jika perlu -->
+            </div>
+
+            <!-- Konten kanan: greeting + logout, dibatasi lebar container -->
+            <div class="hidden lg:flex items-center px-4 sm:px-6 lg:px-8 max-w-7xl ml-auto w-full justify-end">
+                <span class="font-semibold text-black mr-4">Hallo, @userName</span>
+                <a href="@Url.Action("Index", "Home")"
+                   class="px-4 py-2 bg-white text-black font-semibold rounded-lg shadow hover:bg-gray-100 transition">
+                    Logout
+                </a>
             </div>
         </div>
     </nav>
@@ -114,14 +99,17 @@
         <aside class="sidebar">
             <div class="space-y-4">
                 <a href="@Url.Action("Index", "Dashboard")" class="menu-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" viewBox="0 0 24 24">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z" />
+                    </svg>
                     Dashboard
                 </a>
                 <a href="@Url.Action("Index", "Saldo")" class="menu-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" viewBox="0 0 24 24"><path d="M4 4h16v2H4V4zm2 6h12v2H6v-2zm-2 6h16v2H4v-2z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" viewBox="0 0 24 24">
+                        <path d="M4 4h16v2H4V4zm2 6h12v2H6v-2zm-2 6h16v2H4v-2z" />
+                    </svg>
                     Saldo Awal
                 </a>
-
             </div>
         </aside>
 
