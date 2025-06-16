@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BUMMA Papua</title>
+
+    <!-- Bunny Fonts dan Tailwind CSS -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+
+
+    <style>
+        body {
+            background-color: #E4E8D6;
+            font-family: 'Figtree', sans-serif;
+        }
+
+        .divider {
+            border-top: 2px solid #000;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .x-nav-link {
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            text-decoration: none !important;
+            font-size: 1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000 !important;
+        }
+
+        .logo {
+            height: 65px;
+            width: auto;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <div class="min-h-screen" style="background-color: #E4E8D6;">
+        <!-- Navbar -->
+        <nav class="border-b border-gray-200 bg-[#E4E8D6] shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+
+                    <!-- Logo -->
+                    <a href="/" class="flex items-center space-x-2">
+                        <img src="/images/logo.png" alt="Logo" class="h-12 w-auto" />
+                    </a>
+
+                    <!-- Right Side: Dashboard + Login -->
+                    <div class="flex items-center space-x-6">
+                        <a href="/" class="text-[#42563D] font-medium hover:text-[#2d3b2a] transition duration-200">
+                            Dashboard
+                        </a>
+                        <form asp-area="" asp-controller="Account" asp-action="Login" method="post">
+                            <button type="submit"
+                                    class="px-4 py-2 bg-[#42563D] text-black font-semibold rounded-lg shadow hover:bg-[#2f3c29] transition">
+                                Login
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="divider"></div>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            @RenderBody()
+        </main>
+
+
+        <footer class="text-center text-gray-600 py-6" style="background-color: #E4E8D6;">
+            <p class="mb-0">&copy; 2025 BUMMA Papua. All rights reserved.</p>
+        </footer>
+
+
+    </div>
+</body>
+</html>
